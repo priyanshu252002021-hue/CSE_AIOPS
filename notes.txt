@@ -121,4 +121,5 @@ Push the project to github
 Commands:
 git init 
 git add .
-git commit
+git commit -m "First commit"
+git Branch -M
