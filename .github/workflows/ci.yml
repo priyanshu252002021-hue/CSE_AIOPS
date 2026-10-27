@@ -1,42 +1,50 @@
+
 name: Iris Ml API - CI Pipeline - CSE
 
-#Define when Github should run this workflow.
+# Define when Github should run this workflow.
 on:
-#Run CI whenever code is pushed to main branch
+  # Run CI whenever code is pushed to main branch
   push:
-    branches: 
-    - main
+    branches:
+      - main
 
 # permission are restricted to read repo content
 permissions:
-content: read
+  contents: read
 
-#Define the jobs that make up the pipeline 
+# Define the jobs that make up the pipeline
 jobs:
   test-and-build:
-  # Github repo provides a fresh Ubuntu virtual environment for this job 
-  runs-on: ubuntu-latest
+    # Github repo provides a fresh Ubuntu virtual environment for this job
+    runs-on: ubuntu-latest
 
-  steps:
-   #Step- 1: Download the repo content to the runner 
-   - name: Check out repository
-     uses: action/checkout@v4
+    steps:
+      # Step- 1: Download the repo content to the runner
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-     #Step- 2: Install Python on the runner
-     - name Setup Pyhton 
-      uses: action/setups-python@v5
-      with:
-        python-version: "3.14"
+      # Step- 2: Install Python on the runner
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
+      # Step- 3: Install Python dependencies
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
 
-     #Step- 3: Install Pyhton dependencies
-     - name: install Python dependencies
-     run: pyhton 1
+      # Additional step: Train and save the ML model
+      # FastAPI needs iris_model.pkl when importing main.py
+      - name: Train ML model
+        run: python train.py
 
-     #Step- 4: Execute automated tests
-     - name: Run automated tests
-     run: pyhton -m pytest -v
+      # Step- 4: Execute automated tests
+      - name: Run automated tests
+        run: python -m pytest -v
 
-     #Step- 5:Build Docker Image
-     - name: Build Docker Image
-     run: docker build -t iris-ml-api:#{{ github.sha }} .
+      # Step- 5: Build Docker Image
+      - name: Build Docker Image
+        run: docker build -t iris-ml-api:${{ github.sha }} .

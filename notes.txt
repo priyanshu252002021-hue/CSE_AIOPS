@@ -123,3 +123,25 @@ git init
 git add .
 git commit -m "First commit"
 git Branch -M
+
+
+
+Progress so far:
+Train model and create FastAPI application - Done 
+Containerization of the application with docker - Done
+Automated tests with GitHub CI - Done
+Experiment Tracking and model registry with MLFLOW - Next Step
+Container registry and cloud Deployment
+Production monitoring and drift detection 
+Automated training and model Prediction
+
+
+Phase-4: MLFlow - Experiment Tracking and model registry
+
+
+
+
+why do we need mlflow ?
+-Imagine you train a model multiple times, changing the parameters or data version
+-Without experiment tracking you might end up with files like model_v1.joblib,model_v2,joblib, model_final.joblib
+-MLflow helps
